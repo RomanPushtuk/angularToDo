@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+.input-group-addon {
+    padding: .375rem .75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+}
+
+.hover-cursor:hover {
+  cursor: pointer;
+}
+
+.pull-right {
+  margin-left: 6px;
+}
