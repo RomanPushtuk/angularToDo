@@ -50,7 +50,6 @@ export class TodoService {
       check: false,
       id: this.generateId(),
     });
-    console.log(this.toDoList);
     this.saveToDoList(this.toDoList);
     return this.toDoList;
   }

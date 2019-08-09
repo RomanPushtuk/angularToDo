@@ -1,127 +1,13 @@
-<div class="filters-and-sorts">
-  <div class="form-group">
-    <label>Текст</label>
-    <input type="text" class="form-control" [formControl]="textSearch" />
-    <label>Время</label>
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        [formControl]="dateSearch"
-        ngbDatepicker
-        #dataPickerSearch="ngbDatepicker"
-      />
-      <button class="input-group-addon" (click)="dataPickerSearch.toggle()">
-        <i class="fa fa-clock-o"></i>
-      </button>
-    </div>
-  </div>
-  <div class="form-group">
-    <button class="btn btn-primary sort" (click)="sortText()">Сортировка по тексту {{textSortArrow}}</button>
-    <button class="btn btn-primary sort" (click)="sortDate()">Сортировка по дате {{dateSortArrow}}</button>
-  </div>
-</div>
+<app-filters (filtersData)="toDoListArray = $event"></app-filters>
 
 <div class="jumbotron">
   <h4 class="text-center">To Do List App</h4>
 </div>
 
-<div class="alert alert-danger" *ngIf="textValid">
-  Введите текст для записи!
-</div>
-<div class="alert alert-danger" *ngIf="dateValid">
-  Пожалуйста выбирете дату!
-</div>
-
-<div class="form-row">
-  <div class="col-md-7">
-    <label>Текст</label>
-    <input type="text" class="form-control" [formControl]="text" />
-  </div>
-  <div class="col-5 input-group">
-    <label>Время</label>
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        [formControl]="date"
-        ngbDatepicker
-        #dataPicker="ngbDatepicker"
-      />
-      <button class="input-group-addon" (click)="dataPicker.toggle()">
-        <i class="fa fa-clock-o"></i>
-      </button>
-      <button class="input-group-addon" (click)="onAdd()">
-        <i class="fa fa-plus-circle"></i>
-      </button>
-    </div>
-  </div>
-</div>
+<app-inputs (dataInputs)="toDoListArray = $event"></app-inputs>
 
 <div class="items">
   <ul class="list-group">
-    <li class="list-group-item" [id]="item.id" *ngFor="let item of toDoListArray">
-      <span
-        class="hover-cursor"
-        [class.text-success]="item.check"
-        (click)="alterCheck(item.id, item.check)"
-      >
-        <i class="fa fa-lg" [ngClass]="item.check ? 'fa-check-circle-o' : 'fa-circle-thin'"></i>
-      </span>
-      <span>
-        {{ item.text }}
-      </span>
-      <span class="hover-cursor text-danger pull-right" (click)="deleteDoTo(item.id)">
-        <i class="fa fa-trash-o fa-lg"></i>
-      </span>
-      <span
-        class="hover-cursor text-primary pull-right"
-        (click)="handlerChangeData(item.id, item.text, item.date, content)"
-      >
-        <i class="fa fa-cog fa-lg"></i>
-      </span>
-      <span class="pull-right">
-        {{ item.date }}
-      </span>
-    </li>
+    <app-item [toDoListArray]="toDoListArray"></app-item>
   </ul>
 </div>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Изменение данных</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form>
-      <div class="form-group">
-        <label>Текст</label>
-        <input [formControl]="textChange" type="text" class="form-control" />
-        <label>Время</label>
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            [formControl]="dateChange"
-            ngbDatepicker
-            #dataPickerChange="ngbDatepicker"
-          />
-          <span class="input-group-addon hover-cursor" (click)="dataPickerChange.toggle()">
-            <i class="fa fa-clock-o"></i>
-          </span>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="btn btn-outline-dark"
-      (click)="modal.close('Save click'); changeData()"
-    >
-      Save
-    </button>
-  </div>
-</ng-template>

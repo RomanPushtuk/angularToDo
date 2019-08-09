@@ -1,0 +1,31 @@
+<div class="alert alert-danger" *ngIf="textValid">
+  Введите текст для записи!
+</div>
+<div class="alert alert-danger" *ngIf="dateValid">
+  Пожалуйста выбирете дату!
+</div>
+
+<div class="form-row">
+  <div class="col-md-7">
+    <label>Текст</label>
+    <input type="text" class="form-control" [formControl]="text" />
+  </div>
+  <div class="col-5 input-group">
+    <label>Время</label>
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        [formControl]="date"
+        ngbDatepicker
+        #dataPicker="ngbDatepicker"
+      />
+      <button class="input-group-addon" (click)="dataPicker.toggle()">
+        <i class="fa fa-clock-o"></i>
+      </button>
+      <button class="input-group-addon" (click)="onAdd()">
+        <i class="fa fa-plus-circle"></i>
+      </button>
+    </div>
+  </div>
+</div>

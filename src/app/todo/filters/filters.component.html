@@ -1,0 +1,23 @@
+<div class="filters-and-sorts">
+  <div class="form-group">
+    <label>Текст</label>
+    <input type="text" class="form-control" [formControl]="textSearch" />
+    <label>Время</label>
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        [formControl]="dateSearch"
+        ngbDatepicker
+        #dataPickerSearch="ngbDatepicker"
+      />
+      <button class="input-group-addon" (click)="dataPickerSearch.toggle()">
+        <i class="fa fa-clock-o"></i>
+      </button>
+    </div>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary sort" (click)="sortText()">Сортировка по тексту {{textSortArrow}}</button>
+    <button class="btn btn-primary sort" (click)="sortDate()">Сортировка по дате {{dateSortArrow}}</button>
+  </div>
+</div>
