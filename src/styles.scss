@@ -19,3 +19,23 @@
 .pull-right {
   margin-left: 6px;
 }
+
+.jumbotron {
+  padding:45px 0px;
+}
+
+.items {
+  margin:5px 0px;
+}
+
+.filters-and-sorts {
+  width: 200px;
+  position: fixed;
+  margin-left: -230px;
+  .btn {
+    margin-top: 10px;
+  }
+  .sort {
+    width: 100%;
+  }
+}
