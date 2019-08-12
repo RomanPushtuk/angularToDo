@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import ITodo from '../interfaces/ITodo';
 import { TodoService } from '../shared/todo.service';
 import { FormControl } from '@angular/forms';
 import { NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,11 +11,9 @@ import { NgbDateParserFormatter, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ItemComponent implements OnInit {
   id:string;
-  textValid: boolean;
-  dateValid: boolean;
   textChange: FormControl;
   dateChange: FormControl;
-  @Input() toDoListArray: Array<any>;
+  @Input() toDoListArray: Array<ITodo>;
 
   constructor(
     private toDoService:TodoService,
@@ -30,17 +29,24 @@ export class ItemComponent implements OnInit {
   handlerChangeData(id:string ,text:string, date:string, content:any) {
     this.id = id;
     this.textChange.setValue(text);
-    this.dateChange.setValue(this.dateParserFormatter.parse(date));
+    const dateNgb = this.dateParserFormatter.parse(date);
+    this.dateChange.setValue(dateNgb);
     this.modalService.open(content);
   }
 
   changeData() {
-    this.toDoService.changeData(this.id, this.textChange.value, this.dateParserFormatter.format(this.dateChange.value));
+    const dateString = this.dateParserFormatter.format(this.dateChange.value);
+    const obj = {
+      id: this.id,
+      date: dateString,
+      text: this.textChange.value,
+    }
+    this.toDoService.changeData(obj);
   }
 
   // Меняет отметку ВЫПОЛНЕНО\НЕВЫПОЛНЕНО
   alterCheck(id: string, check:boolean){
-    this.toDoService.checkOnToDo(id, !check);
+    this.toDoService.checkOnToDo(id, check);
   }
 
   // Удаляем элемент

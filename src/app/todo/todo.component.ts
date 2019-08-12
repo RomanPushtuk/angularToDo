@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import ITodo from './interfaces/ITodo';
 import { TodoService } from './shared/todo.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { TodoService } from './shared/todo.service';
   providers: [TodoService],
 })
 export class TodoComponent implements OnInit {
-  toDoListArray:Array<any>;
+  toDoListArray:Array<ITodo>;
 
   constructor(
     private toDoService:TodoService,

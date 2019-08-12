@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { TodoService } from '../shared/todo.service';
 import { FormControl, Validators } from '@angular/forms';
 
@@ -9,47 +10,49 @@ import { NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.scss']
 })
-export class InputsComponent implements OnInit {
+export class InputsComponent implements OnInit, OnDestroy  {
   text: FormControl;
   date: FormControl;
-  textValid:boolean;
-  dateValid:boolean;
+  textValid:boolean = true;
+  dateValid:boolean = true;
+  textSubscribe: Subscription;
+  dateSubscribe: Subscription;
 
   @Output() dataInputs:EventEmitter<any> = new EventEmitter();
 
-  constructor(private toDoService:TodoService, private dateParserFormatter:NgbDateParserFormatter) { }
+  constructor(
+    private toDoService:TodoService,
+    private dateParserFormatter:NgbDateParserFormatter
+  ) { }
 
   // Добавляем данные
   onAdd() {
     if (!this.textValid && !this.dateValid){
-      this.dataInputs.emit(this.toDoService.addToDo(this.text.value, this.dateParserFormatter.format(this.date.value)));
+      const dateString = this.dateParserFormatter.format(this.date.value);
+      const toDoListArray = this.toDoService.addToDo(this.text.value, dateString)
+      this.dataInputs.emit(toDoListArray);
       this.text.setValue("");
       this.date.setValue("");
-      this.textValid = false;
-      this.dateValid = false;
     }
   }
 
   ngOnInit() {
-    this.textValid = true;
-    this.dateValid = true;
+    // -----------------------------Валидаторы ввода текста
     this.text = new FormControl("", Validators.required);
-    this.text.statusChanges.subscribe(value => {
-      if(value === "INVALID"){
-        this.textValid = true;
-      }else{
-        this.textValid = false;
-      }
+    this.textSubscribe = this.text.statusChanges.subscribe(value => {
+      this.textValid = value === "INVALID" ? true : false;
     })
+    // -------------------------------Валидаторы ввода даты.
     this.date = new FormControl(null, [validDate, Validators.required ]);
-    this.date.statusChanges.subscribe(value => {
-      if(value === "INVALID"){
-        this.dateValid = true;
-      }else{
-        this.dateValid = false;
-      }
+    this.dateSubscribe = this.date.statusChanges.subscribe(value => {
+      this.dateValid = value === "INVALID" ? true : false;
     })
   }
+
+   ngOnDestroy() {
+     this.textSubscribe.unsubscribe();
+     this.dateSubscribe.unsubscribe();
+   }
 }
 
 function validDate(formControl:FormControl) {

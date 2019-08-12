@@ -1,8 +1,6 @@
-interface todo {
+export default interface ITodo {
   id: string;
   check: boolean;
   text: string;
   date: string;
 }
-
-export { todo };
